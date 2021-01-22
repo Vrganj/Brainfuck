@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo '#include <stdio.h>' > output.c
+echo 'char buffer[163840];' >> output.c
+echo 'char *p = buffer + 81960;' >> output.c
+echo 'int main() {' >> output.c
+
+sed 's/[^][+,.<>-]//g;s/+/++*p;/g;s/\-/--*p;/g;s/</--p;/g;s/>/++p;/g;s/\[/while(*p){/g;s/\]/}/g;s/\./putchar(*p);/g;s/,/*p=fgetc(stdin);/g;' $1 >> output.c
+
+echo '}' >> output.c
+
+gcc -O2 output.c -o bf.out
